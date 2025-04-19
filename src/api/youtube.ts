@@ -1,19 +1,19 @@
 import axios from 'axios';
-import { config } from '../config';
+import { config } from './config';
 
 export class YouTubeAPI {
-  private apiKey: string;
   private clientId: string;
   private clientSecret: string;
   private redirectUri: string;
+  private apiKey: string;
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
 
   constructor() {
-    this.apiKey = config.youtube.apiKey;
     this.clientId = config.youtube.clientId;
     this.clientSecret = config.youtube.clientSecret;
     this.redirectUri = config.youtube.redirectUri;
+    this.apiKey = config.youtube.apiKey;
   }
 
   getAuthUrl(): string {
