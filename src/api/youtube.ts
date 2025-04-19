@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { config } from '@/config';
+import { config } from '../config';
 
 export class YouTubeAPI {
   private apiKey: string;
@@ -13,7 +13,7 @@ export class YouTubeAPI {
     this.apiKey = config.youtube.apiKey;
     this.clientId = config.youtube.clientId;
     this.clientSecret = config.youtube.clientSecret;
-    this.redirectUri = 'http://127.0.0.1:8000/callback';
+    this.redirectUri = config.youtube.redirectUri;
   }
 
   getAuthUrl(): string {

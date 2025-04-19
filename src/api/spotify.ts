@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { config } from '@/config';
+import { config } from '../config';
 
 export class SpotifyAPI {
   private clientId: string;
@@ -11,7 +11,7 @@ export class SpotifyAPI {
   constructor() {
     this.clientId = config.spotify.clientId;
     this.clientSecret = config.spotify.clientSecret;
-    this.redirectUri = 'http://127.0.0.1:8000/callback';
+    this.redirectUri = config.spotify.redirectUri;
   }
 
   getAuthUrl(): string {
