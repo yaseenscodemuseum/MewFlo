@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { config } from './config';
 
 export class YouTubeAPI {
   private clientId: string;
@@ -10,10 +9,10 @@ export class YouTubeAPI {
   private refreshToken: string | null = null;
 
   constructor() {
-    this.clientId = config.youtube.clientId;
-    this.clientSecret = config.youtube.clientSecret;
-    this.redirectUri = config.youtube.redirectUri;
-    this.apiKey = config.youtube.apiKey;
+    this.clientId = import.meta.env.VITE_YOUTUBE_CLIENT_ID;
+    this.clientSecret = import.meta.env.VITE_YOUTUBE_CLIENT_SECRET;
+    this.redirectUri = import.meta.env.VITE_YOUTUBE_REDIRECT_URI;
+    this.apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
   }
 
   getAuthUrl(): string {

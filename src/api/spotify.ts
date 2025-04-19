@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { config } from './config';
 
 export class SpotifyAPI {
   private clientId: string;
@@ -9,9 +8,9 @@ export class SpotifyAPI {
   private refreshToken: string | null = null;
 
   constructor() {
-    this.clientId = config.spotify.clientId;
-    this.clientSecret = config.spotify.clientSecret;
-    this.redirectUri = config.spotify.redirectUri;
+    this.clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+    this.clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
+    this.redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
   }
 
   getAuthUrl(): string {
