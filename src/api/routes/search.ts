@@ -74,7 +74,7 @@ export const searchSongs = async (req: express.Request, res: express.Response) =
         id: item.id?.videoId || '',
         title: item.snippet?.title || '',
         artist: item.snippet?.channelTitle || '',
-        image: item.snippet?.thumbnails?.high?.url,
+        image: item.snippet?.thumbnails?.high?.url || undefined,
         platform: 'youtube'
       })) || [];
     }

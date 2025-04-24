@@ -12,7 +12,7 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 // Get authentication URL
-router.get('/auth', (req: express.Request, res: express.Response) => {
+router.get('/auth', (_req: express.Request, res: express.Response) => {
   const scopes = [
     'playlist-modify-public',
     'playlist-modify-private',

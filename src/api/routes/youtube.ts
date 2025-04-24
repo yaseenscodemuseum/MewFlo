@@ -5,7 +5,7 @@ const router = express.Router();
 const youtubeService = new YouTubeMusicService();
 
 // Get authentication URL
-router.get('/auth', (req: express.Request, res: express.Response) => {
+router.get('/auth', (_req: express.Request, res: express.Response) => {
   const authUrl = youtubeService.getAuthUrl();
   res.json({ authUrl });
 });
