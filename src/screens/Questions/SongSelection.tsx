@@ -4,7 +4,6 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card, CardContent } from '../../components/ui/card';
 import { Logo } from '../../components/Logo';
-import { Checkbox } from '../../components/ui/checkbox';
 
 interface LocationState {
   songCount?: number;
@@ -17,7 +16,6 @@ const SongSelection: React.FC = () => {
   const { songCount = 5, platform = "spotify" } = location.state as LocationState || {};
   
   const [songs, setSongs] = useState<string[]>(Array(Math.min(5, songCount)).fill(""));
-  const [excludeSuggestions, setExcludeSuggestions] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,7 +75,6 @@ const SongSelection: React.FC = () => {
       state: { 
         songCount,
         songs: addedSongs,
-        excludeSuggestions,
         platform
       } 
     });
@@ -142,22 +139,6 @@ const SongSelection: React.FC = () => {
                       </div>
                     </div>
                   ))}
-                </div>
-
-                {/* Exclude Suggestions Checkbox */}
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="exclude-suggestions"
-                    checked={excludeSuggestions}
-                    onCheckedChange={(checked) => setExcludeSuggestions(checked as boolean)}
-                    className="border-[#593c2d] data-[state=checked]:bg-[#593c2d] data-[state=checked]:text-[#ffd6a0]"
-                  />
-                  <label
-                    htmlFor="exclude-suggestions"
-                    className="text-[#593c2d] text-lg font-medium cursor-pointer"
-                  >
-                    Exclude suggested songs
-                  </label>
                 </div>
 
                 {/* Navigation Buttons */}

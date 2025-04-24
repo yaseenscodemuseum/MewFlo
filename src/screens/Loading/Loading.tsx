@@ -6,6 +6,7 @@ import { Card, CardContent } from "../../components/ui/card";
 import { createMusicService, Platform } from "../../api/musicService";
 import { Logo } from "../../components/Logo";
 import AdSense from '../../components/AdSense';
+import { API_URL } from '../../config';
 
 interface Playlist {
   title: string;
@@ -71,7 +72,7 @@ export const Loading = (): JSX.Element => {
       try {
         setProgressText("Sending request to AI...");
         
-        const response = await fetch('http://localhost:3000/api/playlist/generate', {
+        const response = await fetch(`${API_URL}/playlist/generate`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
