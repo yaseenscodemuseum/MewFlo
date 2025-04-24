@@ -2,9 +2,9 @@ import express from 'express';
 import { config } from 'dotenv';
 import cors from 'cors';
 import { generatePlaylist } from './playlist';
-import { searchSongs } from './search';
-import { spotifyAuth, spotifyCallback } from './spotify';
-import { appleMusicAuth } from './apple-music';
+import { searchRoutes } from './search';
+import { spotifyRoutes } from './spotify';
+import { appleMusicRoutes } from './apple-music';
 
 // Load environment variables
 config();
@@ -16,7 +16,7 @@ router.use(cors());
 router.use(express.json());
 
 // Health check
-router.get('/health', (_, res) => {
+router.get('/health', (_req: express.Request, res: express.Response) => {
   res.json({ status: 'ok' });
 });
 
@@ -24,11 +24,10 @@ router.get('/health', (_, res) => {
 router.post('/generate-playlist', generatePlaylist);
 
 // Search Routes
-router.get('/search/songs', searchSongs);
+router.use('/search', searchRoutes);
 
 // Authentication Routes
-router.get('/auth/spotify', spotifyAuth);
-router.get('/auth/spotify/callback', spotifyCallback);
-router.post('/auth/apple-music', appleMusicAuth);
+router.use('/spotify', spotifyRoutes);
+router.use('/apple-music', appleMusicRoutes);
 
 export default router; 

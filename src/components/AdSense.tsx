@@ -1,6 +1,12 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-export const AdSense = () => {
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
+
+const AdSense: React.FC = () => {
   useEffect(() => {
     // Load Google AdSense script
     const script = document.createElement('script');
@@ -10,7 +16,11 @@ export const AdSense = () => {
     document.head.appendChild(script);
 
     // Initialize ads
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (err) {
+      console.error('AdSense error:', err);
+    }
 
     // Cleanup
     return () => {
@@ -28,4 +38,6 @@ export const AdSense = () => {
       data-full-width-responsive="true"
     />
   );
-}; 
+};
+
+export default AdSense; 

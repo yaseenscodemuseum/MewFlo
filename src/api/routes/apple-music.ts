@@ -1,4 +1,7 @@
-import { Request, Response } from 'express';
+import { Router } from 'express';
+import { MusicKit } from '../services/apple-music';
+
+const router = Router();
 
 export const appleMusicAuth = async (req: Request, res: Response) => {
   try {
