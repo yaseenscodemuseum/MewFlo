@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card, CardContent } from '../../components/ui/card';
 import { Logo } from '../../components/Logo';
+import { Checkbox } from '../../components/ui/checkbox';
 
 interface LocationState {
   songCount?: number;
@@ -110,10 +111,10 @@ const SongSelection: React.FC = () => {
                   />
                   <Button
                     onClick={handleAddSong}
-                    disabled={!searchQuery.trim() || !canAddMore}
+                    disabled={!searchQuery.trim() || !canAddMore || isLoading}
                     className="h-14 px-8 text-xl bg-[#9b7e6f] hover:bg-[#9b7e6f] text-[#593c2d] hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Add
+                    {isLoading ? "Adding..." : "Add"}
                   </Button>
                 </div>
 
@@ -141,6 +142,22 @@ const SongSelection: React.FC = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+
+                {/* Exclude Suggestions Checkbox */}
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="exclude-suggestions"
+                    checked={excludeSuggestions}
+                    onCheckedChange={(checked) => setExcludeSuggestions(checked as boolean)}
+                    className="border-[#593c2d] data-[state=checked]:bg-[#593c2d] data-[state=checked]:text-[#ffd6a0]"
+                  />
+                  <label
+                    htmlFor="exclude-suggestions"
+                    className="text-[#593c2d] text-lg font-medium cursor-pointer"
+                  >
+                    Exclude suggested songs
+                  </label>
                 </div>
 
                 {/* Navigation Buttons */}
