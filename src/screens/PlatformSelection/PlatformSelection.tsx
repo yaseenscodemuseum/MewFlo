@@ -16,21 +16,21 @@ const PlatformSelection: React.FC = () => {
         <nav className="w-[599px] h-[65px] bg-[#98a7754a] rounded-[40px] relative mb-14 flex justify-between items-center px-8">
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
             onClick={() => window.open('https://yaseensportfolio.vercel.app/', '_blank')}
           >
             Contact Us
           </Button>
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
             onClick={() => navigate('/how-it-works')}
           >
             How it works
           </Button>
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white bg-[#acbd86]/30 px-6 rounded-full drop-shadow-[0_0_8px_rgba(172,189,134,0.8)] hover:bg-[#acbd86]/30"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
           >
             Home
           </Button>
@@ -43,26 +43,36 @@ const PlatformSelection: React.FC = () => {
           </h2>
           <div className="absolute w-full top-[237px] flex justify-center">
             <div className="flex items-center gap-[300px]">
-              <Button
-                className="w-[142px] h-36 rounded-[71px/72px] bg-[#073307] hover:bg-[#0a520a] p-0"
-                onClick={() => handlePlatformSelect('spotify')}
-              >
-                <img
-                  className="w-28 h-28 object-contain"
-                  alt="Spotify logo"
-                  src="/spotify-primary-logo-rgb-green-1.png"
-                />
-              </Button>
-              <Button
-                className="w-[142px] h-36 rounded-[71px/72px] bg-[#900a0a] hover:bg-[#b30d0d] p-0"
-                onClick={() => handlePlatformSelect('youtube')}
-              >
-                <img
-                  className="w-[105px] h-[105px] object-contain"
-                  alt="YouTube Music logo"
-                  src="/youtube-music-icon-svg.png"
-                />
-              </Button>
+              <div className="flex flex-col items-center group">
+                <Button
+                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#073307] hover:bg-[#073307] p-0"
+                  onClick={() => handlePlatformSelect('spotify')}
+                >
+                  <img
+                    className="w-28 h-28 object-contain group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
+                    alt="Spotify logo"
+                    src="/spotify-primary-logo-rgb-green-1.png"
+                  />
+                </Button>
+                <span className="mt-6 text-[#073307] text-4xl font-bold group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200">
+                  Spotify
+                </span>
+              </div>
+              <div className="flex flex-col items-center group">
+                <Button
+                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#900a0a] hover:bg-[#900a0a] p-0"
+                  onClick={() => handlePlatformSelect('youtube')}
+                >
+                  <img
+                    className="w-[105px] h-[105px] object-contain group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
+                    alt="YouTube Music logo"
+                    src="/youtube-music-icon-svg.png"
+                  />
+                </Button>
+                <span className="mt-6 text-[#900a0a] text-4xl font-bold group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200">
+                  YouTube Music
+                </span>
+              </div>
             </div>
           </div>
         </div>
