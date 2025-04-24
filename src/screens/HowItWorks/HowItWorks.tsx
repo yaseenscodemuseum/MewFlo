@@ -17,22 +17,23 @@ const HowItWorks: React.FC = () => {
           <Button
             variant="ghost"
             className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
-            onClick={() => window.open('https://yaseensportfolio.vercel.app/', '_blank')}
-          >
-            Contact Us
-          </Button>
-          <Button
-            variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white bg-[#acbd86]/30 px-6 rounded-full drop-shadow-[0_0_8px_rgba(172,189,134,0.8)] hover:bg-[#acbd86]/30"
+            onClick={() => navigate('/how-it-works')}
           >
             How it works
           </Button>
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
             onClick={() => navigate('/')}
           >
             Home
+          </Button>
+          <Button
+            variant="ghost"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
+            onClick={() => window.open('https://yaseensportfolio.vercel.app/', '_blank')}
+          >
+            Contact Us
           </Button>
         </nav>
 
@@ -41,17 +42,15 @@ const HowItWorks: React.FC = () => {
           <h1 className="text-[#60bf79] text-4xl font-bold mb-8 text-center drop-shadow-[0_0_8px_rgba(96,191,121,0.8)]">
             How it Works
           </h1>
-          <p className="text-white text-xl leading-relaxed [font-family:'Circular_Spotify_Text',Helvetica]">
-            Hey there! MewFlo is your personal AI DJ that creates the perfect playlist just for you.
-            
-            <br>Here's the magic:</br>
-            <br>We gather the information you provide us and then pass it on to Gemini through the Gemini API.</br>
-            <br>While the AI generates the playlist, we use the Adsense API to gain some revenue from ads as an experiment.</br>
-            <br>Once the playlist is generated, we use the Spotify/Yt API to export the playlist to your Spotify/Yt account.</br>
-            <br></br>
-            <br>Check out my portfolio through the Contact Us button above!</br>
-            <br>We hope you enjoy the service!</br>  
-          </p>
+          <div className="text-white text-xl leading-relaxed [font-family:'Circular_Spotify_Text',Helvetica] space-y-4">
+            <p>Hey there! MewFlo is your personal AI DJ that creates the perfect playlist just for you.</p>
+            <p>Here's the magic:</p>
+            <p>We gather the information you provide us and then pass it on to Gemini through the Gemini API.</p>
+            <p>While the AI generates the playlist, we use the Adsense API to gain some revenue from ads as an experiment.</p>
+            <p>Once the playlist is generated, we use the Spotify/Yt API to export the playlist to your Spotify/Yt account.</p>
+            <p>Check out my portfolio through the Contact Us button above!</p>
+            <p>We hope you enjoy the service!</p>
+          </div>
         </div>
       </div>
     </main>

@@ -21,13 +21,6 @@ const PlatformSelection: React.FC = () => {
           <Button
             variant="ghost"
             className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
-            onClick={() => window.open('https://yaseensportfolio.vercel.app/', '_blank')}
-          >
-            Contact Us
-          </Button>
-          <Button
-            variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
             onClick={() => navigate('/how-it-works')}
           >
             How it works
@@ -37,6 +30,13 @@ const PlatformSelection: React.FC = () => {
             className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
           >
             Home
+          </Button>
+          <Button
+            variant="ghost"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
+            onClick={() => window.open('https://yaseensportfolio.vercel.app/', '_blank')}
+          >
+            Contact Us
           </Button>
         </nav>
 
