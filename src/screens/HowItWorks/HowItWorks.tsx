@@ -43,7 +43,7 @@ const HowItWorks: React.FC = () => {
             How it Works
           </h1>
           <div className="text-white text-xl leading-relaxed [font-family:'Circular_Spotify_Text',Helvetica] space-y-4">
-            <p>Hey there! MewFlo is your personal AI DJ that creates the perfect playlist just for you.</p>
+            <pHey there! MewFlo is your personal AI recommendation engine that creates the perfect playlist just for you.</p>
             <p>Here's the magic:</p>
             <p>We gather the information you provide us and then pass it on to Gemini through the Gemini API.</p>
             <p>While the AI generates the playlist, we use the Adsense API to gain some revenue from ads as an experiment.</p>

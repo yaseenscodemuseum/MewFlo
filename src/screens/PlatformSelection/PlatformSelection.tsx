@@ -49,7 +49,7 @@ const PlatformSelection: React.FC = () => {
             <div className="flex items-center gap-[300px]">
               <div className="flex flex-col items-center group">
                 <Button
-                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#073307] hover:bg-[#073307] p-0"
+                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#073307] hover:bg-[#0a520a] p-0 transition-all duration-200"
                   onClick={() => handlePlatformSelect('spotify')}
                 >
                   <img
@@ -58,13 +58,13 @@ const PlatformSelection: React.FC = () => {
                     src="/spotify-primary-logo-rgb-green-1.png"
                   />
                 </Button>
-                <span className="mt-6 text-[#073307] text-4xl font-bold group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200">
+                <span className="mt-6 text-[#073307] text-4xl font-bold group-hover:text-[#0a520a] group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200">
                   Spotify
                 </span>
               </div>
               <div className="flex flex-col items-center group">
                 <Button
-                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#900a0a] hover:bg-[#900a0a] p-0"
+                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#900a0a] hover:bg-[#b30d0d] p-0 transition-all duration-200"
                   onClick={() => handlePlatformSelect('youtube')}
                 >
                   <img
@@ -73,7 +73,7 @@ const PlatformSelection: React.FC = () => {
                     src="/youtube-music-icon-svg.png"
                   />
                 </Button>
-                <span className="mt-6 text-[#900a0a] text-4xl font-bold group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200">
+                <span className="mt-6 text-[#900a0a] text-4xl font-bold group-hover:text-[#b30d0d] group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200">
                   YouTube Music
                 </span>
               </div>
