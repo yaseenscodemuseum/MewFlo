@@ -3,7 +3,8 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import { generatePlaylist } from './playlist';
 import { searchRoutes } from './search';
-import spotifyRoutes from './spotify';
+import { spotifyRoutes } from './spotify';
+import { youtubeRoutes } from './youtube';
 
 // Load environment variables
 config();
@@ -27,5 +28,6 @@ router.use('/search', searchRoutes);
 
 // Authentication Routes
 router.use('/spotify', spotifyRoutes);
+router.use('/youtube', youtubeRoutes);
 
 export default router; 
