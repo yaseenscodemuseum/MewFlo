@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card, CardContent } from '../../components/ui/card';
+import { Logo } from '../../components/Logo';
 
 const SongSelection: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +24,10 @@ const SongSelection: React.FC = () => {
   return (
     <main className="bg-[#003526] min-h-screen flex flex-col items-center">
       <div className="w-full max-w-[1440px] relative py-6 flex flex-col items-center">
+        {/* Logo */}
+        <Logo />
+
+        {/* Main Card */}
         <Card className="w-[1029px] h-[618px] bg-[#ffd6a0] rounded-[80px] border-none relative">
           <CardContent className="p-0">
             <h2 className="absolute w-[898px] h-44 top-[13px] left-[60px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-[#593c2d] text-[80px] text-center">

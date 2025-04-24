@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
+import { Logo } from '../../components/Logo';
 
 const PlatformSelection: React.FC = () => {
   const navigate = useNavigate();
@@ -12,6 +13,9 @@ const PlatformSelection: React.FC = () => {
   return (
     <main className="bg-[#003526] min-h-screen flex flex-col items-center">
       <div className="w-full max-w-[1440px] relative py-6 flex flex-col items-center">
+        {/* Logo */}
+        <Logo />
+
         {/* Navigation */}
         <nav className="w-[599px] h-[65px] bg-[#98a7754a] rounded-[40px] relative mb-14 flex justify-between items-center px-8">
           <Button

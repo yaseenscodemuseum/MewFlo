@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { Logo } from '../../components/Logo';
 
 const HowItWorks: React.FC = () => {
   const navigate = useNavigate();
@@ -8,11 +9,14 @@ const HowItWorks: React.FC = () => {
   return (
     <main className="bg-[#003526] min-h-screen flex flex-col items-center">
       <div className="w-full max-w-[1440px] relative py-6 flex flex-col items-center">
+        {/* Logo */}
+        <Logo />
+
         {/* Navigation */}
         <nav className="w-[599px] h-[65px] bg-[#98a7754a] rounded-[40px] relative mb-14 flex justify-between items-center px-8">
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
             onClick={() => window.open('https://yaseensportfolio.vercel.app/', '_blank')}
           >
             Contact Us
@@ -25,7 +29,7 @@ const HowItWorks: React.FC = () => {
           </Button>
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
             onClick={() => navigate('/')}
           >
             Home
@@ -38,11 +42,15 @@ const HowItWorks: React.FC = () => {
             How it Works
           </h1>
           <p className="text-white text-xl leading-relaxed [font-family:'Circular_Spotify_Text',Helvetica]">
-            Hey there! MewFlo is your personal AI DJ that creates the perfect playlist just for you. Here's the magic: 
-            First, pick your favorite music platform (Spotify or YouTube Music). Then, tell us about your music taste - 
-            share some songs you love, your favorite genres, and even your mood! Our AI will analyze your preferences 
-            and craft a personalized playlist that matches your vibe perfectly. The best part? You can export it directly 
-            to your chosen platform with just one click. No more endless scrolling - just pure, personalized music bliss!
+            Hey there! MewFlo is your personal AI DJ that creates the perfect playlist just for you.
+            
+            <br>Here's the magic:</br>
+            <br>We gather the information you provide us and then pass it on to Gemini through the Gemini API.</br>
+            <br>While the AI generates the playlist, we use the Adsense API to gain some revenue from ads as an experiment.</br>
+            <br>Once the playlist is generated, we use the Spotify/Yt API to export the playlist to your Spotify/Yt account.</br>
+            <br></br>
+            <br>Check out my portfolio through the Contact Us button above!</br>
+            <br>We hope you enjoy the service!</br>  
           </p>
         </div>
       </div>
