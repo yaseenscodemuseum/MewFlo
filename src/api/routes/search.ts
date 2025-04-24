@@ -1,11 +1,15 @@
-import { Request, Response } from 'express';
+import * as express from 'express';
 import SpotifyWebApi from 'spotify-web-api-node';
+import { config } from 'dotenv';
 import { google } from 'googleapis';
 
-// Initialize Spotify client
+config();
+
+const router = express.Router();
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
 
 // Get and refresh Spotify access token
@@ -32,39 +36,30 @@ interface SearchResult {
   artist: string;
   album?: string;
   image?: string;
-  platform: 'spotify' | 'youtube' | 'apple';
+  platform: 'spotify' | 'youtube';
   uri?: string; // For Spotify track URI
 }
 
-export const searchSongs = async (req: Request, res: Response) => {
+export const searchSongs = async (req: express.Request, res: express.Response) => {
   try {
-    const { query, platform } = req.query as { query: string; platform: string };
-    let results: SearchResult[] = [];
-
-    switch (platform) {
-      case 'spotify':
-        results = await searchSpotify(query);
-        break;
-      case 'youtube':
-        results = await searchYouTube(query);
-        break;
-      case 'apple':
-        results = await searchAppleMusic(query);
-        break;
-      default:
-        throw new Error('Invalid platform specified');
+    const { query } = req.query;
+    if (!query) {
+      return res.status(400).json({ error: 'Query parameter is required' });
     }
 
-    res.json({
-      success: true,
-      results
-    });
+    const results = await spotifyApi.searchTracks(query as string);
+    const tracks = results.body.tracks?.items.map(track => ({
+      id: track.id,
+      name: track.name,
+      artist: track.artists[0].name,
+      album: track.album.name,
+      image: track.album.images[0]?.url
+    })) || [];
+
+    res.json({ tracks });
   } catch (error) {
-    console.error('Search failed:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to search songs'
-    });
+    console.error('Error searching songs:', error);
+    res.status(500).json({ error: 'Failed to search songs' });
   }
 };
 
@@ -107,8 +102,4 @@ async function searchYouTube(query: string): Promise<SearchResult[]> {
   })) || []) as SearchResult[];
 }
 
-async function searchAppleMusic(query: string): Promise<SearchResult[]> {
-  // TODO: Implement Apple Music search
-  console.log(`Searching Apple Music for: ${query}`);
-  return [];
-} 
+export const searchRoutes = router; 

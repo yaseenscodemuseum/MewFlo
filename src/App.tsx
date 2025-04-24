@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { PlatformSelection } from './screens/PlatformSelection';
+import PlatformSelection from './screens/PlatformSelection/PlatformSelection';
 import { SongCount } from './screens/Questions/SongCount';
-import { SongSelection } from './screens/Questions/SongSelection';
+import SongSelection from './screens/Questions/SongSelection';
 import { FavoriteGenres } from './screens/Questions/FavoriteGenres';
 import { FavoriteArtists } from './screens/Questions/FavoriteArtists';
 import { Languages } from './screens/Questions/Languages';
@@ -10,8 +10,8 @@ import { ExplicitContent } from './screens/Questions/ExplicitContent';
 import { Mood } from './screens/Questions/Mood';
 import { Loading } from './screens/Loading/Loading';
 import Playlist from './screens/Playlist/Playlist';
-import { Export } from './screens/Export';
-import { Callback } from './screens/Callback';
+import { Export } from './screens/Export/Export';
+import { Callback } from './screens/Callback/Callback';
 import { Success } from './screens/Success/Success';
 import { Error } from './screens/Error/Error';
 

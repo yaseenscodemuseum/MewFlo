@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { createMusicService } from '@/services/music-service';
 
 const PlatformSelection: React.FC = () => {
   const navigate = useNavigate();

@@ -1,10 +1,9 @@
-import express from 'express';
+import * as express from 'express';
+import * as cors from 'cors';
 import { config } from 'dotenv';
-import cors from 'cors';
 import { generatePlaylist } from './playlist';
 import { searchRoutes } from './search';
 import { spotifyRoutes } from './spotify';
-import { appleMusicRoutes } from './apple-music';
 
 // Load environment variables
 config();
@@ -28,6 +27,5 @@ router.use('/search', searchRoutes);
 
 // Authentication Routes
 router.use('/spotify', spotifyRoutes);
-router.use('/apple-music', appleMusicRoutes);
 
 export default router; 
