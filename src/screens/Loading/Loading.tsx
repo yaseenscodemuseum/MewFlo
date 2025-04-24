@@ -5,7 +5,7 @@ import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { createMusicService, Platform } from "../../api/musicService";
 import { Logo } from "../../components/Logo";
-import { AdSense } from "../../components/AdSense";
+import AdSense from '../../components/AdSense';
 
 interface Playlist {
   title: string;

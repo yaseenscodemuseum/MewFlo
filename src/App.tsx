@@ -14,6 +14,7 @@ import { Export } from './screens/Export/Export';
 import { Callback } from './screens/Callback/Callback';
 import { Success } from './screens/Success/Success';
 import { Error } from './screens/Error/Error';
+import HowItWorks from './screens/HowItWorks/HowItWorks';
 
 // Import other question screens as needed
 
@@ -23,6 +24,7 @@ const App: React.FC = () => {
       <Routes>
         {/* Landing */}
         <Route path="/" element={<PlatformSelection />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
 
         {/* Required Questions */}
         <Route path="/questions/song-count" element={<SongCount />} />

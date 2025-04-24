@@ -1,9 +1,10 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { PlatformSelection } from "./screens/PlatformSelection/PlatformSelection";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import PlatformSelection from './screens/PlatformSelection/PlatformSelection';
+import './index.css';
 
-createRoot(document.getElementById("app") as HTMLElement).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
     <PlatformSelection />
-  </StrictMode>,
+  </React.StrictMode>
 );
