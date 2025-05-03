@@ -28,6 +28,7 @@ const PlatformSelection: React.FC = () => {
           <Button
             variant="ghost"
             className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200 hover:bg-transparent"
+            onClick={() => navigate('/')}
           >
             Home
           </Button>
