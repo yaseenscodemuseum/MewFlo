@@ -6,7 +6,11 @@ import { Card, CardContent } from "../../components/ui/card";
 import { createMusicService, Platform } from "../../api/musicService";
 import { Logo } from "../../components/Logo";
 import AdSense from '../../components/AdSense';
-import { API_URL } from '../../config';
+
+// API URL configuration
+const API_URL = import.meta.env.PROD 
+  ? 'https://mewflo.vercel.app/api'  // Production API URL
+  : 'http://localhost:3001';         // Development API URL
 
 interface Playlist {
   title: string;
