@@ -9,8 +9,8 @@ import AdSense from '../../components/AdSense';
 
 // API URL configuration
 const API_URL = import.meta.env.PROD 
-  ? 'https://mewflo.vercel.app/api'  // Production API URL
-  : 'http://localhost:3001';         // Development API URL
+  ? 'https://mewflo.vercel.app'  // Production API URL without /api
+  : 'http://localhost:3001';     // Development API URL
 
 interface Playlist {
   title: string;
@@ -76,10 +76,11 @@ export const Loading = (): JSX.Element => {
       try {
         setProgressText("Sending request to AI...");
         
-        const response = await fetch(`${API_URL}/playlist/generate`, {
+        const response = await fetch(`${API_URL}/api/playlist/generate`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json'
           },
           body: JSON.stringify({
             preferences: {
