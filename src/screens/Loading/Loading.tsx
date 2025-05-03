@@ -76,7 +76,7 @@ export const Loading = (): JSX.Element => {
       try {
         setProgressText("Sending request to AI...");
         
-        const response = await fetch(`${API_URL}/api/playlist/generate`, {
+        const response = await fetch(`${API_URL}/playlist/generate`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
