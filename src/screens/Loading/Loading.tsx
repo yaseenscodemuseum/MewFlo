@@ -97,14 +97,24 @@ export const Loading = (): JSX.Element => {
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
+          const errorData = await response.json().catch(() => ({ error: 'Server error occurred' }));
           throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data = await response.json().catch(() => {
+          throw new Error('Invalid response from server');
+        });
+        
+        if (!data || !Array.isArray(data)) {
+          throw new Error('Invalid playlist data received');
+        }
         
         // Ensure data is in the correct format
-        const formattedData = Array.isArray(data) ? data : [];
+        const formattedData = data.map(item => ({
+          title: item.title || 'Unknown Title',
+          artist: item.artist || 'Unknown Artist',
+          reason: item.reason || 'No reason provided'
+        }));
         
         setPlaylists({
           primary: formattedData,
