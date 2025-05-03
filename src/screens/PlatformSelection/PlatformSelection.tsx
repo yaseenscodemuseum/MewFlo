@@ -20,20 +20,20 @@ const PlatformSelection: React.FC = () => {
         <nav className="w-[599px] h-[65px] bg-[#98a7754a] rounded-[40px] relative mb-14 flex justify-between items-center px-8">
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200 hover:bg-transparent"
             onClick={() => navigate('/how-it-works')}
           >
             How it works
           </Button>
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200 hover:bg-transparent"
           >
             Home
           </Button>
           <Button
             variant="ghost"
-            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-[#1DB954] hover:drop-shadow-[0_0_8px_rgba(29,185,84,0.8)] transition-all duration-200"
+            className="h-[42px] [font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-2xl text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200 hover:bg-transparent"
             onClick={() => window.open('https://yaseensportfolio.vercel.app/', '_blank')}
           >
             Contact Us
@@ -49,7 +49,7 @@ const PlatformSelection: React.FC = () => {
             <div className="flex items-center gap-[300px]">
               <div className="flex flex-col items-center group">
                 <Button
-                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#073307] hover:bg-[#0a520a] p-0 transition-all duration-200"
+                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#073307] hover:bg-[#1DB954] p-0 transition-all duration-200"
                   onClick={() => handlePlatformSelect('spotify')}
                 >
                   <img
@@ -64,7 +64,7 @@ const PlatformSelection: React.FC = () => {
               </div>
               <div className="flex flex-col items-center group">
                 <Button
-                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#900a0a] hover:bg-[#b30d0d] p-0 transition-all duration-200"
+                  className="w-[142px] h-36 rounded-[71px/72px] bg-[#900a0a] hover:bg-[#FF0000] p-0 transition-all duration-200"
                   onClick={() => handlePlatformSelect('youtube')}
                 >
                   <img

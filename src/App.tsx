@@ -6,7 +6,6 @@ import SongSelection from './screens/Questions/SongSelection';
 import { FavoriteGenres } from './screens/Questions/FavoriteGenres';
 import { FavoriteArtists } from './screens/Questions/FavoriteArtists';
 import { Languages } from './screens/Questions/Languages';
-import { ExplicitContent } from './screens/Questions/ExplicitContent';
 import { Mood } from './screens/Questions/Mood';
 import { Loading } from './screens/Loading/Loading';
 import Playlist from './screens/Playlist/Playlist';
@@ -34,7 +33,6 @@ const App: React.FC = () => {
         <Route path="/questions/favorite-genres" element={<FavoriteGenres />} />
         <Route path="/questions/favorite-artists" element={<FavoriteArtists />} />
         <Route path="/questions/languages" element={<Languages />} />
-        <Route path="/questions/explicit-content" element={<ExplicitContent />} />
         <Route path="/questions/mood" element={<Mood />} />
         <Route path="/loading" element={<Loading />} />
         <Route path="/playlist" element={<Playlist />} />

@@ -41,7 +41,7 @@ export const Languages = (): JSX.Element => {
 
   const handleNext = () => {
     const state = location.state as LocationState;
-    navigate(`/questions/explicit-content?platform=${platform}`, {
+    navigate(`/questions/mood?platform=${platform}`, {
       state: {
         ...state,
         languages,

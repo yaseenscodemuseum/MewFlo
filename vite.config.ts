@@ -28,8 +28,7 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
         },
-      },
-      external: ['@/components/ui/button']
+      }
     },
   },
   server: {
