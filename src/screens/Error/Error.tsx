@@ -40,8 +40,8 @@ export const Error = (): JSX.Element => {
                     </p>
                   </div>
                   <Button
+                    className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-white text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
                     onClick={handleRetry}
-                    className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#593c2d]/90 text-white text-xl rounded-full"
                   >
                     Try Again
                   </Button>

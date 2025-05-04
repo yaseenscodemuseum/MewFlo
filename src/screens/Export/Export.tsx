@@ -105,15 +105,15 @@ export const Export = (): JSX.Element => {
 
                   <div className="flex justify-between w-full px-8">
                     <Button
+                      className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-[#ffd6a0] text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
                       onClick={handleBack}
-                      className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#593c2d]/30 text-[#ffd6a0] text-xl rounded-full"
                     >
                       Back
                     </Button>
                     <Button
                       onClick={handleExport}
                       disabled={isAuthenticating}
-                      className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#593c2d]/90 text-[#ffd6a0] text-xl rounded-full"
+                      className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-[#ffd6a0] text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
                     >
                       {isAuthenticating ? 'Authenticating...' : 'Sign In & Export'}
                     </Button>

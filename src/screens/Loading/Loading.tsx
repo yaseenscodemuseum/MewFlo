@@ -250,7 +250,7 @@ export const Loading = (): JSX.Element => {
                     <div className="flex items-center gap-4 mb-8">
                       <Button
                         variant="ghost"
-                        className="w-8 h-8 p-0 rounded-full bg-[#593c2d]/20 hover:bg-[#593c2d]/30"
+                        className="w-8 h-8 p-0 rounded-full bg-[#593c2d]/20 hover:bg-[#6b4a3a]/30 transition-all duration-300 hover:shadow-[0_0_10px_rgba(89,60,45,0.3)]"
                         onClick={() => setCurrentPlaylist(0)}
                       >
                         <span className="text-[#593c2d]">1</span>
@@ -260,7 +260,7 @@ export const Loading = (): JSX.Element => {
                           <span className="text-[#593c2d]">←</span>
                           <Button
                             variant="ghost"
-                            className="w-8 h-8 p-0 rounded-full bg-[#593c2d]/20 hover:bg-[#593c2d]/30"
+                            className="w-8 h-8 p-0 rounded-full bg-[#593c2d]/20 hover:bg-[#6b4a3a]/30 transition-all duration-300 hover:shadow-[0_0_10px_rgba(89,60,45,0.3)]"
                             onClick={() => setCurrentPlaylist(1)}
                           >
                             <span className="text-[#593c2d]">2</span>
@@ -272,7 +272,7 @@ export const Loading = (): JSX.Element => {
 
                     {/* Create Playlist Button */}
                     <Button
-                      className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#593c2d]/90 text-white text-xl rounded-full"
+                      className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-white text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
                       onClick={handleCreatePlaylist}
                     >
                       Create Playlist

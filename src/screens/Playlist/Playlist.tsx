@@ -41,7 +41,7 @@ const Playlist: React.FC = () => {
 
                 {/* Export Button */}
                 <Button
-                  className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#593c2d] text-white text-xl rounded-full hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200"
+                  className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-white text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
                 >
                   Export Playlist
                 </Button>

@@ -70,7 +70,7 @@ export const Mood = (): JSX.Element => {
                   />
                   <Button
                     onClick={handleAddMood}
-                    className="w-32 h-[60px] bg-[#593c2d] hover:bg-[#593c2d]/90 text-white text-xl rounded-full"
+                    className="w-32 h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-white text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
                   >
                     Add
                   </Button>
@@ -80,7 +80,7 @@ export const Mood = (): JSX.Element => {
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="bg-[#593c2d]/20 text-[#593c2d] text-lg px-4 py-2 rounded-full hover:bg-[#593c2d]/30"
+                      className="bg-[#593c2d]/20 text-[#593c2d] text-lg px-4 py-2 rounded-full hover:bg-[#6b4a3a]/30 transition-all duration-300 hover:shadow-[0_0_10px_rgba(89,60,45,0.3)]"
                     >
                       {mood}
                       <button
@@ -97,22 +97,22 @@ export const Mood = (): JSX.Element => {
             <div className="absolute bottom-8 left-0 right-0 flex justify-between px-16">
               <Button
                 onClick={handleBack}
-                className="w-[200px] h-[60px] bg-[#593c2d] hover:bg-[#593c2d]/90 text-white text-xl rounded-full"
+                className="w-[200px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-white text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
               >
                 Back
               </Button>
               <div className="flex gap-4">
                 {moods.length > 0 ? (
                   <Button
+                    className="w-[200px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-white text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
                     onClick={handleNext}
-                    className="w-[200px] h-[60px] bg-[#593c2d] hover:bg-[#593c2d]/90 text-white text-xl rounded-full"
                   >
                     Next
                   </Button>
                 ) : (
                   <Button
+                    className="w-[200px] h-[60px] bg-[#593c2d]/20 hover:bg-[#6b4a3a]/30 text-[#593c2d] text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_10px_rgba(89,60,45,0.3)]"
                     onClick={() => navigate("/loading", { state: { ...state, moods: [] } })}
-                    className="w-[200px] h-[60px] bg-[#593c2d]/20 hover:bg-[#593c2d]/30 text-[#593c2d] text-xl rounded-full"
                   >
                     Skip
                   </Button>
