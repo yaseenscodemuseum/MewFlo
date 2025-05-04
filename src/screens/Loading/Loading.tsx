@@ -153,34 +153,14 @@ export const Loading = (): JSX.Element => {
     return () => clearInterval(progressInterval);
   }, [navigate, state]);
 
-  const handleCreatePlaylist = async () => {
-    try {
-      const platform = state.platform || 'spotify' as Platform;
-      const musicService = createMusicService(platform);
-      
-      const currentSongs = currentPlaylist === 0 ? playlists.primary : playlists.secondary;
-      if (!currentSongs) return;
-
-      const trackIds = await Promise.all(
-        currentSongs.map(async (song) => {
-          const results = await musicService.searchTracks(`${song.title} ${song.artist}`, 1);
-          return results[0]?.id;
-        })
-      );
-
-      const validTrackIds = trackIds.filter(Boolean);
-      await musicService.createPlaylist(
-        'MewFlo Generated Playlist',
-        'Created with MewFlo - Your AI Playlist Generator',
-        validTrackIds
-      );
-
-      navigate('/success');
-    } catch (error) {
-      console.error('Error creating playlist:', error);
-      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-      navigate('/error', { state: { error: errorMessage } });
-    }
+  const handleCreatePlaylist = () => {
+    navigate('/export', {
+      state: {
+        platform: state.platform,
+        primary: playlists.primary,
+        secondary: playlists.secondary
+      }
+    });
   };
 
   const currentSongs = currentPlaylist === 0 ? playlists.primary : playlists.secondary;
@@ -269,19 +249,28 @@ export const Loading = (): JSX.Element => {
                         </>
                       )}
                     </div>
-
-                    {/* Create Playlist Button */}
-                    <Button
-                      className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-white text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
-                      onClick={handleCreatePlaylist}
-                    >
-                      Create Playlist
-                    </Button>
                   </>
                 )}
               </div>
             </CardContent>
           </Card>
+
+          {/* Export Button - Moved outside the card */}
+          {!loading && (
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mt-8"
+            >
+              <Button
+                className="w-[300px] h-[60px] bg-[#593c2d] hover:bg-[#6b4a3a] text-white text-xl rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(89,60,45,0.5)]"
+                onClick={handleCreatePlaylist}
+              >
+                Export to {state.platform === 'spotify' ? 'Spotify' : 'YouTube Music'}
+              </Button>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </main>
