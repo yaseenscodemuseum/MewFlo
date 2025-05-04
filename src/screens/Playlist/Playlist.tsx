@@ -4,9 +4,15 @@ import { Button } from '../../components/ui/button';
 import { Logo } from '../../components/Logo';
 import { Card, CardContent } from '../../components/ui/card';
 
+interface PlaylistItem {
+  title: string;
+  artist: string;
+  reason: string;
+}
+
 const Playlist: React.FC = () => {
   const location = useLocation();
-  const { songs } = location.state || { songs: [] };
+  const { primary } = location.state || { primary: [] };
 
   return (
     <main className="bg-[#003526] min-h-screen flex flex-col items-center">
@@ -24,9 +30,11 @@ const Playlist: React.FC = () => {
               <div className="w-[800px] flex flex-col items-center gap-8">
                 {/* Songs List */}
                 <div className="w-full space-y-4 max-h-[300px] overflow-y-auto">
-                  {songs.map((song: string, index: number) => (
+                  {primary.map((song: PlaylistItem, index: number) => (
                     <div key={index} className="bg-[#593c2d]/10 p-4 rounded-lg">
-                      <p className="text-[#593c2d] text-xl font-medium">{song}</p>
+                      <h3 className="text-[#593c2d] text-xl font-bold">{song.title}</h3>
+                      <p className="text-[#593c2d]/80">{song.artist}</p>
+                      <p className="text-[#593c2d]/60 text-sm mt-2">{song.reason}</p>
                     </div>
                   ))}
                 </div>
