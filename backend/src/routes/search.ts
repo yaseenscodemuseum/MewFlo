@@ -71,7 +71,7 @@ export const searchSongs = async (req: Request, res: Response) => {
 async function searchSpotify(query: string): Promise<SearchResult[]> {
   try {
     const data = await spotifyApi.searchTracks(query, { limit: 10 });
-    return data.body.tracks?.items.map(track => ({
+    return data.body.tracks?.items.map((track: SpotifyApi.TrackObjectFull) => ({
       id: track.id,
       title: track.name,
       artist: track.artists[0].name,
@@ -98,7 +98,7 @@ async function searchYouTube(query: string): Promise<SearchResult[]> {
     key: process.env.YOUTUBE_API_KEY
   });
 
-  return (response.data.items?.map(item => ({
+  return (response.data.items?.map((item: any) => ({
     id: item.id?.videoId || '',
     title: item.snippet?.title || '',
     artist: item.snippet?.channelTitle || '',

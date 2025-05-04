@@ -9,8 +9,8 @@ import AdSense from '../../components/AdSense';
 
 // API URL configuration
 const API_URL = import.meta.env.PROD 
-  ? 'https://mewflo.vercel.app'  // Production API URL without /api
-  : 'http://localhost:3001';     // Development API URL
+  ? 'https://mewflo-backend.onrender.com/api'  // Your Render backend URL
+  : 'http://localhost:3001/api';     // Development API URL with /api
 
 interface Playlist {
   title: string;
