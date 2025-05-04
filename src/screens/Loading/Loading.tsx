@@ -8,9 +8,7 @@ import { Logo } from "../../components/Logo";
 import AdSense from '../../components/AdSense';
 
 // API URL configuration
-const API_URL = import.meta.env.PROD 
-  ? 'https://mewflo-backend.onrender.com/api'  // Your Render backend URL
-  : 'http://localhost:3001/api';     // Development API URL with /api
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 interface Playlist {
   title: string;
