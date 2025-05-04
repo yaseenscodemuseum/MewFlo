@@ -23,6 +23,7 @@
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
     "@types/spotify-web-api-node": "^5.0.11",
+    "@vercel/analytics": "^1.5.0",
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
