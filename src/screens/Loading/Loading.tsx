@@ -97,6 +97,12 @@ export const Loading = (): JSX.Element => {
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({ error: 'Server error occurred' }));
+          
+          // Handle specific error cases
+          if (errorData.error?.includes('429') || errorData.error?.includes('quota')) {
+            throw new Error('The AI service is currently busy. Please try again in a few minutes.');
+          }
+          
           throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
         }
 
@@ -141,9 +147,25 @@ export const Loading = (): JSX.Element => {
       } catch (error) {
         console.error('Error generating playlist:', error);
         setLoading(false);
-        setProgressText("Error generating playlist");
-        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-        navigate('/error', { state: { error: errorMessage } });
+        
+        // Set a more user-friendly error message
+        let errorMessage = 'An error occurred while generating your playlist.';
+        if (error instanceof Error) {
+          if (error.message.includes('busy')) {
+            errorMessage = error.message;
+          } else if (error.message.includes('quota')) {
+            errorMessage = 'The AI service is currently at capacity. Please try again in a few minutes.';
+          }
+        }
+        
+        setProgressText(errorMessage);
+        navigate('/error', { 
+          state: { 
+            error: errorMessage,
+            retryPath: '/',
+            retryText: 'Try Again'
+          } 
+        });
       }
     };
 

@@ -40,7 +40,27 @@ router.post('/generate', async (req, res) => {
     res.json(playlist);
   } catch (error: any) {
     console.error('Error generating playlist:', error);
-    res.status(500).json({ error: error.message || 'Failed to generate playlist' });
+    
+    // Handle specific error cases
+    if (error.message?.includes('429') || error.message?.includes('quota')) {
+      return res.status(429).json({ 
+        error: 'The AI service is currently at capacity. Please try again in a few minutes.',
+        retryAfter: 60 // Suggest retrying after 1 minute
+      });
+    }
+    
+    // Handle other API errors
+    if (error.message?.includes('API')) {
+      return res.status(503).json({ 
+        error: 'The AI service is temporarily unavailable. Please try again later.',
+        retryAfter: 300 // Suggest retrying after 5 minutes
+      });
+    }
+    
+    res.status(500).json({ 
+      error: 'Failed to generate playlist',
+      details: error.message || 'An unexpected error occurred'
+    });
   }
 });
 
