@@ -1,10 +1,6 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { createMusicService } from "../../api/musicService";
 
 export const Callback = (): JSX.Element => {
-  const navigate = useNavigate();
-
   useEffect(() => {
     const handleCallback = async () => {
       try {
