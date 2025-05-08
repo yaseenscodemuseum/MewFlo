@@ -3,7 +3,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+// Validate API key
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error('GEMINI_API_KEY is not set in environment variables');
+}
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 interface PlaylistItem {
   title: string;
@@ -24,7 +29,15 @@ export const generatePlaylist = async (preferences: {
 }): Promise<PlaylistItem[]> => {
   try {
     console.log("Generating playlist with preferences:", preferences);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash-001',
+      generationConfig: {
+        temperature: 0.7,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 8192,
+      }
+    });
     
     // Calculate how many additional songs we need
     const requiredSongs = preferences.songCount;
@@ -146,6 +159,22 @@ Important:
     return playlist;
   } catch (error: any) {
     console.error("Gemini error:", error);
+    
+    // Handle specific API key errors
+    if (error.message?.includes('API_KEY_INVALID') || error.message?.includes('API Key not found')) {
+      throw new Error('Invalid or missing API key. Please check your configuration.');
+    }
+    
+    // Handle rate limit errors
+    if (error.message?.includes('429') || error.message?.includes('quota')) {
+      throw new Error('Rate limit exceeded. Please try again in a few minutes.');
+    }
+
+    // Handle model not found errors
+    if (error.message?.includes('model not found')) {
+      throw new Error('The AI model is currently unavailable. Please try again later.');
+    }
+    
     throw new Error('Failed to generate playlist: ' + error.message);
   }
 }; 
