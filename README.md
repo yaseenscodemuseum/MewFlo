@@ -1,78 +1,127 @@
-# MewFlo - AI-Powered Playlist Generator
+# MewFlo - AI Playlist Maker 🎵
 
-MewFlo is a web application that generates personalized playlists using AI. It supports both Spotify and YouTube Music platforms.
+MewFlo is an innovative web application that leverages artificial intelligence to create personalized music playlists. Built with modern web technologies, it provides an intuitive interface for users to generate playlists based on their preferences and mood.
 
-## Features
+🌐 **Live Demo:** [https://mewflo.vercel.app](https://mewflo.vercel.app)
 
-- AI-powered playlist generation based on user preferences
-- Support for both Spotify and YouTube Music
-- Beautiful and intuitive user interface
-- Customizable playlist parameters
-- Secure authentication with OAuth 2.0
+## 🌟 Features
 
-## Getting Started
+- AI-powered playlist generation
+- Spotify integration
+- Modern, responsive UI built with React and Tailwind CSS
+- Real-time playlist creation and modification
+- User-friendly interface with smooth animations
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- Radix UI Components
+- React Router DOM
+
+### Backend
+- Node.js
+- Express
+- TypeScript
+- Spotify Web API
+- Google AI Integration
+- OpenAI Integration
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (>= 18.0.0)
 - npm or yarn
 - Spotify Developer Account
-- Google Cloud Console Account (for YouTube Music)
+- Google AI API Key
+- OpenAI API Key
 
 ### Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/mewflo.git
-cd mewflo
+git clone https://github.com/yourusername/MewFlo.git
+cd MewFlo
 ```
 
-2. Install dependencies:
+2. Install frontend dependencies:
 ```bash
 npm install
-# or
-yarn install
 ```
 
-3. Create a `.env` file in the root directory with your API credentials:
+3. Install backend dependencies:
+```bash
+cd backend
+npm install
+```
+
+4. Create a `.env` file in the root directory with the following variables:
 ```env
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_AI_API_KEY=your_google_ai_api_key
+OPENAI_API_KEY=your_openai_api_key
 ```
 
-4. Start the development server:
+### Running Locally
+
+1. Start the backend server:
+```bash
+cd backend
+npm run dev
+```
+
+2. In a new terminal, start the frontend development server:
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-## Environment Setup
+3. Open your browser and navigate to `http://localhost:5173`
 
-### Spotify API
-1. Create a Spotify Developer account
-2. Create a new application
-3. Add `http://127.0.0.1:8000/callback` to the Redirect URIs
-4. Copy the Client ID and Client Secret
+## 🏗️ Building for Production
 
-### YouTube Music API
-1. Create a Google Cloud Console account
-2. Create a new project
-3. Enable the YouTube Data API v3
-4. Create OAuth 2.0 credentials
-5. Add `http://127.0.0.1:8000/callback` to the Authorized redirect URIs
-6. Copy the Client ID and Client Secret
+1. Build the frontend:
+```bash
+npm run build
+```
 
-## Contributing
+2. Build the backend:
+```bash
+cd backend
+npm run build
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## 🚢 Deployment
 
-## License
+The project is configured for deployment on Vercel. The `vercel.json` file contains the necessary configuration for deployment.
+
+To deploy:
+
+1. Push your changes to GitHub
+2. Connect your repository to Vercel
+3. Configure the environment variables in Vercel's dashboard
+4. Deploy!
+
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📧 Contact
+
+Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
+
+Project Link: [https://github.com/yourusername/MewFlo](https://github.com/yourusername/MewFlo)

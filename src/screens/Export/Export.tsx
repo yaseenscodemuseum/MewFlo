@@ -28,15 +28,6 @@ export const Export = (): JSX.Element => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // If we have a code in the URL, we're coming back from authentication
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-    
-    if (code) {
-      // We should be handled by the Callback component
-      return;
-    }
-
     // If we don't have state, we shouldn't be here
     if (!state) {
       navigate('/');
@@ -56,8 +47,60 @@ export const Export = (): JSX.Element => {
       const musicService = createMusicService(state.platform);
       const authUrl = await musicService.getAuthUrl();
       
-      // Redirect to the authentication URL
-      window.location.href = authUrl;
+      // Open the authentication URL in a new window
+      const authWindow = window.open(authUrl, 'Spotify Auth', 'width=600,height=700');
+      
+      // Listen for the callback
+      const checkAuth = setInterval(async () => {
+        try {
+          const code = localStorage.getItem('auth_code');
+          if (code) {
+            clearInterval(checkAuth);
+            localStorage.removeItem('auth_code');
+            
+            // Handle the authentication callback
+            await musicService.handleAuthCallback(code);
+            
+            // Create the playlist
+            const trackIds = await Promise.all(
+              state.primary.map(async (song) => {
+                const results = await musicService.searchTracks(`${song.title} ${song.artist}`, 1);
+                return results[0]?.id;
+              })
+            );
+
+            const validTrackIds = trackIds.filter(Boolean);
+            await musicService.createPlaylist(
+              'MewFlo Generated Playlist',
+              'Created with MewFlo - Your AI Playlist Generator',
+              validTrackIds
+            );
+
+            // Close the auth window and navigate to success
+            if (authWindow) {
+              authWindow.close();
+            }
+            navigate('/success');
+          }
+        } catch (error) {
+          console.error('Error during authentication:', error);
+          setError('Authentication failed. Please try again.');
+          setIsAuthenticating(false);
+          clearInterval(checkAuth);
+        }
+      }, 1000);
+
+      // Cleanup interval after 5 minutes
+      setTimeout(() => {
+        clearInterval(checkAuth);
+        if (authWindow) {
+          authWindow.close();
+        }
+        if (isAuthenticating) {
+          setError('Authentication timed out. Please try again.');
+          setIsAuthenticating(false);
+        }
+      }, 300000);
     } catch (error: any) {
       console.error('Error starting authentication:', error);
       if (error.message.includes('testing mode')) {
