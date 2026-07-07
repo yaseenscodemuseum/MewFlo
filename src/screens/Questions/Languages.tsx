@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { QuestionLayout } from "../../components/QuestionLayout";
 import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { X } from "lucide-react";
 
@@ -24,11 +25,15 @@ export const Languages = (): JSX.Element => {
   const [currentLanguage, setCurrentLanguage] = useState("");
   const [languages, setLanguages] = useState<string[]>([]);
 
-  const handleAddLanguage = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && currentLanguage.trim()) {
+  const addLanguage = () => {
+    if (currentLanguage.trim()) {
       setLanguages([...languages, currentLanguage.trim()]);
       setCurrentLanguage("");
     }
+  };
+
+  const handleAddLanguage = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") addLanguage();
   };
 
   const handleRemoveLanguage = (languageToRemove: string) => {
@@ -60,7 +65,7 @@ export const Languages = (): JSX.Element => {
     >
       <div className="space-y-6">
         {/* Language Input */}
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-4">
           <Input
             value={currentLanguage}
             onChange={(e) => setCurrentLanguage(e.target.value)}
@@ -68,6 +73,13 @@ export const Languages = (): JSX.Element => {
             placeholder="Example: English, Hindi"
             className="w-[400px] h-12 bg-[#9b7e6f]/20 border-none text-[#593c2d] text-xl placeholder:text-[#593c2d]/50"
           />
+          <Button
+            onClick={addLanguage}
+            disabled={!currentLanguage.trim()}
+            className="h-12 px-8 text-xl bg-[#9b7e6f] hover:bg-[#9b7e6f] text-[#593c2d] hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Add
+          </Button>
         </div>
 
         {/* Language Tags */}
