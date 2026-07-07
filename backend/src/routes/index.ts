@@ -1,6 +1,6 @@
 import express from 'express';
 import playlistRouter from './playlist';
-import spotifyRouter from './spotify';
+import youtubeRouter from './youtube';
 import { searchSongs } from './search';
 
 const router = express.Router();
@@ -13,10 +13,10 @@ router.get('/health', (_, res) => {
 // Playlist Generation Routes
 router.use('/playlist', playlistRouter);
 
-// Spotify Routes
-router.use('/spotify', spotifyRouter);
+// YouTube OAuth token exchange
+router.use('/youtube', youtubeRouter);
 
 // Search Routes
 router.get('/search', searchSongs);
 
-export default router; 
+export default router;

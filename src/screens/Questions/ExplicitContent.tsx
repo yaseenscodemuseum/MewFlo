@@ -28,8 +28,8 @@ export const ExplicitContent = (): JSX.Element => {
     const state = location.state as LocationState;
     navigate(`/questions/mood?platform=${platform}`, {
       state: {
-        allowExplicit,
-        ...state
+        ...state,
+        allowExplicit
       }
     });
   };

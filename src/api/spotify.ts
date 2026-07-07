@@ -1,31 +1,52 @@
 import axios from 'axios';
 
+// PKCE helpers — Spotify's recommended flow for browser apps (no client secret needed)
+function generateCodeVerifier(length = 64): string {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const values = crypto.getRandomValues(new Uint8Array(length));
+  return Array.from(values, (v) => possible[v % possible.length]).join('');
+}
+
+async function generateCodeChallenge(verifier: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier));
+  return btoa(String.fromCharCode(...new Uint8Array(digest)))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
 export class SpotifyAPI {
   private clientId: string;
-  private clientSecret: string;
   private redirectUri: string;
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
 
   constructor() {
     this.clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-    this.clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
     this.redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
+    this.accessToken = localStorage.getItem('spotify_access_token');
+    this.refreshToken = localStorage.getItem('spotify_refresh_token');
   }
 
-  getAuthUrl(): string {
+  async getAuthUrl(): Promise<string> {
     const scopes = [
       'playlist-modify-public',
       'playlist-modify-private',
       'user-read-private',
       'user-read-email'
     ];
-    
+
+    const verifier = generateCodeVerifier();
+    localStorage.setItem('spotify_code_verifier', verifier);
+    const challenge = await generateCodeChallenge(verifier);
+
     const params = new URLSearchParams({
       client_id: this.clientId,
       response_type: 'code',
       redirect_uri: this.redirectUri,
       scope: scopes.join(' '),
+      code_challenge_method: 'S256',
+      code_challenge: challenge,
       show_dialog: 'true'
     });
 
@@ -33,25 +54,29 @@ export class SpotifyAPI {
   }
 
   async handleAuthCallback(code: string): Promise<void> {
+    const verifier = localStorage.getItem('spotify_code_verifier');
+    if (!verifier) {
+      throw new Error('Missing PKCE code verifier. Please try signing in again.');
+    }
+
     try {
-      const response = await axios.post('https://accounts.spotify.com/api/token', 
+      const response = await axios.post('https://accounts.spotify.com/api/token',
         new URLSearchParams({
           grant_type: 'authorization_code',
           code,
           redirect_uri: this.redirectUri,
+          client_id: this.clientId,
+          code_verifier: verifier,
         }),
         {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`
-          }
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
       );
 
       this.accessToken = response.data.access_token;
       this.refreshToken = response.data.refresh_token;
+      localStorage.removeItem('spotify_code_verifier');
 
-      // Store tokens in localStorage for persistence
       if (this.accessToken) {
         localStorage.setItem('spotify_access_token', this.accessToken);
       }
@@ -77,16 +102,21 @@ export class SpotifyAPI {
         new URLSearchParams({
           grant_type: 'refresh_token',
           refresh_token: this.refreshToken,
+          client_id: this.clientId,
         }),
         {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`
-          }
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
       );
 
       this.accessToken = response.data.access_token;
+      if (this.accessToken) {
+        localStorage.setItem('spotify_access_token', this.accessToken);
+      }
+      if (response.data.refresh_token) {
+        this.refreshToken = response.data.refresh_token;
+        localStorage.setItem('spotify_refresh_token', response.data.refresh_token);
+      }
     } catch (error) {
       console.error('Error refreshing Spotify token:', error);
       throw error;
@@ -101,7 +131,7 @@ export class SpotifyAPI {
 
   async searchTracks(query: string, limit: number = 10): Promise<any[]> {
     await this.ensureAuthenticated();
-    
+
     try {
       const response = await axios.get('https://api.spotify.com/v1/search', {
         headers: {
@@ -178,4 +208,4 @@ export class SpotifyAPI {
   }
 }
 
-export const spotifyAPI = new SpotifyAPI(); 
+export const spotifyAPI = new SpotifyAPI();

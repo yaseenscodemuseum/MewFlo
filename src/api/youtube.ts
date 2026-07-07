@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+// Token exchange happens on the backend so the Google client secret never ships to the browser
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 export class YouTubeAPI {
   private clientId: string;
-  private clientSecret: string;
   private redirectUri: string;
   private apiKey: string;
   private accessToken: string | null = null;
@@ -10,42 +12,37 @@ export class YouTubeAPI {
 
   constructor() {
     this.clientId = import.meta.env.VITE_YOUTUBE_CLIENT_ID;
-    this.clientSecret = import.meta.env.VITE_YOUTUBE_CLIENT_SECRET;
     this.redirectUri = import.meta.env.VITE_YOUTUBE_REDIRECT_URI;
     this.apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
+    this.accessToken = localStorage.getItem('youtube_access_token');
+    this.refreshToken = localStorage.getItem('youtube_refresh_token');
   }
 
   getAuthUrl(): string {
-    const clientId = this.clientId;
-    const redirectUri = this.redirectUri;
     const scope = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl';
-    
+
     const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
-    authUrl.searchParams.append('client_id', clientId);
-    authUrl.searchParams.append('redirect_uri', redirectUri);
+    authUrl.searchParams.append('client_id', this.clientId);
+    authUrl.searchParams.append('redirect_uri', this.redirectUri);
     authUrl.searchParams.append('response_type', 'code');
     authUrl.searchParams.append('scope', scope);
     authUrl.searchParams.append('access_type', 'offline');
     authUrl.searchParams.append('prompt', 'consent');
     authUrl.searchParams.append('include_granted_scopes', 'true');
-    
+
     return authUrl.toString();
   }
 
   async handleAuthCallback(code: string): Promise<void> {
     try {
-      const response = await axios.post('https://oauth2.googleapis.com/token', {
-        client_id: this.clientId,
-        client_secret: this.clientSecret,
+      const response = await axios.post(`${API_URL}/youtube/token`, {
         code,
-        redirect_uri: this.redirectUri,
-        grant_type: 'authorization_code'
+        redirectUri: this.redirectUri
       });
 
       this.accessToken = response.data.access_token;
       this.refreshToken = response.data.refresh_token;
 
-      // Store tokens in localStorage for persistence
       if (this.accessToken) {
         localStorage.setItem('youtube_access_token', this.accessToken);
       }
@@ -72,11 +69,8 @@ export class YouTubeAPI {
     }
 
     try {
-      const response = await axios.post('https://oauth2.googleapis.com/token', {
-        client_id: this.clientId,
-        client_secret: this.clientSecret,
-        refresh_token: this.refreshToken,
-        grant_type: 'refresh_token'
+      const response = await axios.post(`${API_URL}/youtube/refresh`, {
+        refreshToken: this.refreshToken
       });
 
       this.accessToken = response.data.access_token;
@@ -134,7 +128,8 @@ export class YouTubeAPI {
           headers: {
             'Authorization': `Bearer ${this.accessToken}`,
             'Content-Type': 'application/json'
-          }
+          },
+          params: { part: 'snippet,status' }
         }
       );
 
@@ -157,7 +152,8 @@ export class YouTubeAPI {
             headers: {
               'Authorization': `Bearer ${this.accessToken}`,
               'Content-Type': 'application/json'
-            }
+            },
+            params: { part: 'snippet' }
           }
         );
       }
@@ -171,4 +167,4 @@ export class YouTubeAPI {
   }
 }
 
-export const youtubeAPI = new YouTubeAPI(); 
+export const youtubeAPI = new YouTubeAPI();

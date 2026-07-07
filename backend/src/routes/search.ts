@@ -1,30 +1,28 @@
 import { Request, Response } from 'express';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { google } from 'googleapis';
+import axios from 'axios';
 
-// Initialize Spotify client
-const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.SPOTIFY_CLIENT_ID,
-  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-});
+// Lazily construct the client and fetch a client-credentials token, refreshing
+// it shortly before expiry. Doing everything on demand (instead of at module
+// load) means missing credentials surface as a request error rather than
+// crashing at startup, and env vars are read after dotenv has run.
+let spotifyApi: SpotifyWebApi | null = null;
+let tokenExpiresAt = 0;
 
-// Get and refresh Spotify access token
-async function getSpotifyAccessToken() {
-  try {
+async function getSpotifyApi(): Promise<SpotifyWebApi> {
+  if (!spotifyApi) {
+    spotifyApi = new SpotifyWebApi({
+      clientId: process.env.SPOTIFY_CLIENT_ID,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+    });
+  }
+  if (Date.now() >= tokenExpiresAt - 60_000) {
     const data = await spotifyApi.clientCredentialsGrant();
     spotifyApi.setAccessToken(data.body.access_token);
-    return data.body.access_token;
-  } catch (error) {
-    console.error('Error getting Spotify access token:', error);
-    throw error;
+    tokenExpiresAt = Date.now() + data.body.expires_in * 1000;
   }
+  return spotifyApi;
 }
-
-// Refresh token every hour
-setInterval(getSpotifyAccessToken, 3600 * 1000);
-getSpotifyAccessToken(); // Initial token
-
-const youtube = google.youtube('v3');
 
 interface SearchResult {
   id: string;
@@ -48,9 +46,6 @@ export const searchSongs = async (req: Request, res: Response) => {
       case 'youtube':
         results = await searchYouTube(query);
         break;
-      case 'apple':
-        results = await searchAppleMusic(query);
-        break;
       default:
         throw new Error('Invalid platform specified');
     }
@@ -69,33 +64,29 @@ export const searchSongs = async (req: Request, res: Response) => {
 };
 
 async function searchSpotify(query: string): Promise<SearchResult[]> {
-  try {
-    const data = await spotifyApi.searchTracks(query, { limit: 10 });
-    return data.body.tracks?.items.map((track: SpotifyApi.TrackObjectFull) => ({
-      id: track.id,
-      title: track.name,
-      artist: track.artists[0].name,
-      album: track.album.name,
-      image: track.album.images[0]?.url,
-      platform: 'spotify',
-      uri: track.uri
-    })) || [];
-  } catch (error) {
-    console.error('Spotify search error:', error);
-    // Try refreshing token on error
-    await getSpotifyAccessToken();
-    throw error;
-  }
+  const spotifyApi = await getSpotifyApi();
+  const data = await spotifyApi.searchTracks(query, { limit: 10 });
+  return data.body.tracks?.items.map((track: SpotifyApi.TrackObjectFull) => ({
+    id: track.id,
+    title: track.name,
+    artist: track.artists[0].name,
+    album: track.album.name,
+    image: track.album.images[0]?.url,
+    platform: 'spotify' as const,
+    uri: track.uri
+  })) || [];
 }
 
 async function searchYouTube(query: string): Promise<SearchResult[]> {
-  const response = await youtube.search.list({
-    part: ['snippet'],
-    q: query,
-    type: ['video'],
-    videoCategoryId: '10', // Music category
-    maxResults: 10,
-    key: process.env.YOUTUBE_API_KEY
+  const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+    params: {
+      part: 'snippet',
+      q: query,
+      type: 'video',
+      videoCategoryId: '10', // Music category
+      maxResults: 10,
+      key: process.env.YOUTUBE_API_KEY
+    }
   });
 
   return (response.data.items?.map((item: any) => ({
@@ -106,9 +97,3 @@ async function searchYouTube(query: string): Promise<SearchResult[]> {
     platform: 'youtube'
   })) || []) as SearchResult[];
 }
-
-async function searchAppleMusic(query: string): Promise<SearchResult[]> {
-  // TODO: Implement Apple Music search
-  console.log(`Searching Apple Music for: ${query}`);
-  return [];
-} 

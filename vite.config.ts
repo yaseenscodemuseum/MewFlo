@@ -12,9 +12,6 @@ export default defineConfig({
       plugins: [tailwind()],
     },
   },
-  define: {
-    'process.env': process.env
-  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
@@ -31,9 +28,4 @@ export default defineConfig({
       }
     },
   },
-  server: {
-    headers: {
-      'Content-Type': 'text/javascript'
-    }
-  }
 });

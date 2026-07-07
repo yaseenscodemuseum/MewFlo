@@ -27,8 +27,7 @@ MewFlo is an innovative web application that leverages artificial intelligence t
 - Express
 - TypeScript
 - Spotify Web API
-- Google AI Integration
-- OpenAI Integration
+- Google Gemini Integration
 
 ## 🚀 Getting Started
 
@@ -37,8 +36,7 @@ MewFlo is an innovative web application that leverages artificial intelligence t
 - Node.js (>= 18.0.0)
 - npm or yarn
 - Spotify Developer Account
-- Google AI API Key
-- OpenAI API Key
+- Google Cloud project (OAuth client for YouTube + Gemini API key)
 
 ### Installation
 
@@ -59,13 +57,28 @@ cd backend
 npm install
 ```
 
-4. Create a `.env` file in the root directory with the following variables:
+4. Create a single `.env` file in the root directory — it is shared by the frontend and the backend. Vite only exposes `VITE_`-prefixed vars to the browser; everything else stays server-side:
 ```env
+PORT=3000
+
+# Frontend (PUBLIC — bundled into the shipped JS)
+VITE_API_URL=http://localhost:3000/api
+VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+VITE_SPOTIFY_REDIRECT_URI=http://localhost:5173/callback
+VITE_YOUTUBE_CLIENT_ID=your_google_oauth_client_id
+VITE_YOUTUBE_REDIRECT_URI=http://localhost:5173/callback
+VITE_YOUTUBE_API_KEY=your_youtube_data_api_key
+
+# Backend secrets (never add a VITE_ prefix to these)
+GEMINI_API_KEY=your_gemini_api_key
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-GOOGLE_AI_API_KEY=your_google_ai_api_key
-OPENAI_API_KEY=your_openai_api_key
+YOUTUBE_CLIENT_ID=your_google_oauth_client_id
+YOUTUBE_CLIENT_SECRET=your_google_oauth_client_secret
+YOUTUBE_API_KEY=your_youtube_data_api_key
 ```
+
+In production the file isn't used — set the `VITE_` vars in the Vercel frontend project and the secret vars in the backend deployment's dashboard.
 
 ### Running Locally
 

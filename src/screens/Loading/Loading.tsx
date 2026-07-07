@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Platform } from "../../api/musicService";
@@ -8,7 +8,7 @@ import { Logo } from "../../components/Logo";
 import AdSense from '../../components/AdSense';
 
 // API URL configuration
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 interface Playlist {
   title: string;
@@ -21,8 +21,8 @@ interface LocationState {
   genres: string[];
   artists: string[];
   languages: string[];
-  explicit: boolean;
-  mood: string;
+  allowExplicit?: boolean;
+  moods: string[];
   songs: string[];
   excludeSuggestions?: boolean;
   songCount?: number;
@@ -89,8 +89,8 @@ export const Loading = (): JSX.Element => {
               genres: state.genres,
               artists: state.artists,
               languages: state.languages,
-              allowExplicit: state.explicit,
-              moods: state.mood ? [state.mood] : []
+              allowExplicit: state.allowExplicit,
+              moods: state.moods || []
             }
           }),
         });

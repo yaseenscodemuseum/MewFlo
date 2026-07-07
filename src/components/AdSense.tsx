@@ -8,24 +8,13 @@ declare global {
 
 const AdSense: React.FC = () => {
   useEffect(() => {
-    // Load Google AdSense script
-    const script = document.createElement('script');
-    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8678304253364241';
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-    document.head.appendChild(script);
-
-    // Initialize ads
+    // The AdSense loader script is included once in index.html;
+    // here we only request an ad for this slot.
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (err) {
       console.error('AdSense error:', err);
     }
-
-    // Cleanup
-    return () => {
-      document.head.removeChild(script);
-    };
   }, []);
 
   return (

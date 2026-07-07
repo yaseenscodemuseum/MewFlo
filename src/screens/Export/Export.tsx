@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { createMusicService, Platform } from "../../api/musicService";
@@ -51,6 +51,7 @@ export const Export = (): JSX.Element => {
       const authWindow = window.open(authUrl, 'Spotify Auth', 'width=600,height=700');
       
       // Listen for the callback
+      let finished = false;
       const checkAuth = setInterval(async () => {
         try {
           const code = localStorage.getItem('auth_code');
@@ -77,6 +78,7 @@ export const Export = (): JSX.Element => {
             );
 
             // Close the auth window and navigate to success
+            finished = true;
             if (authWindow) {
               authWindow.close();
             }
@@ -84,6 +86,7 @@ export const Export = (): JSX.Element => {
           }
         } catch (error) {
           console.error('Error during authentication:', error);
+          finished = true;
           setError('Authentication failed. Please try again.');
           setIsAuthenticating(false);
           clearInterval(checkAuth);
@@ -93,10 +96,10 @@ export const Export = (): JSX.Element => {
       // Cleanup interval after 5 minutes
       setTimeout(() => {
         clearInterval(checkAuth);
-        if (authWindow) {
-          authWindow.close();
-        }
-        if (isAuthenticating) {
+        if (!finished) {
+          if (authWindow) {
+            authWindow.close();
+          }
           setError('Authentication timed out. Please try again.');
           setIsAuthenticating(false);
         }

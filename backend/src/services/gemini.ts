@@ -29,13 +29,14 @@ export const generatePlaylist = async (preferences: {
 }): Promise<PlaylistItem[]> => {
   try {
     console.log("Generating playlist with preferences:", preferences);
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash-001',
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.7,
         topK: 40,
         topP: 0.95,
         maxOutputTokens: 8192,
+        responseMimeType: 'application/json',
       }
     });
     
