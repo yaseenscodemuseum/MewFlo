@@ -106,7 +106,7 @@ export const Export = (): JSX.Element => {
       }, 300000);
     } catch (error: any) {
       console.error('Error starting authentication:', error);
-      if (error.message.includes('testing mode')) {
+      if (error?.message?.includes?.('testing mode')) {
         setError('This app is in testing mode. Please contact the developer to be added as a test user.');
       } else {
         setError('Failed to start authentication. Please try again.');

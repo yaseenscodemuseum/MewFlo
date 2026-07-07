@@ -1,140 +1,102 @@
-# MewFlo - AI Playlist Maker 🎵
+# MewFlo - AI Playlist Maker
 
-MewFlo is an innovative web application that leverages artificial intelligence to create personalized music playlists. Built with modern web technologies, it provides an intuitive interface for users to generate playlists based on their preferences and mood.
+MewFlo is an AI-powered web app that generates personalized music playlists based on your song preferences, favorite genres, artists, languages, mood, and more — then exports them directly to Spotify or YouTube Music.
 
-🌐 **Live Demo:** [https://mewflo.vercel.app](https://mewflo.vercel.app)
+**Live Demo:** [https://mewflo.vercel.app](https://mewflo.vercel.app)
 
-## 🌟 Features
+## Features
 
-- AI-powered playlist generation
-- Spotify integration
-- Modern, responsive UI built with React and Tailwind CSS
-- Real-time playlist creation and modification
-- User-friendly interface with smooth animations
+- AI playlist generation powered by Google Gemini
+- Export to Spotify (PKCE auth) and YouTube Music (OAuth 2.0)
+- Song search across platforms
+- Customizable preferences: genres, artists, languages, mood, explicit content filter, song count
+- Smooth animated UI with responsive design
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-### Frontend
-- React 18
-- TypeScript
-- Vite
-- Tailwind CSS
-- Radix UI Components
-- React Router DOM
+**Frontend** — React 18, TypeScript, Vite, Tailwind CSS, Radix UI, Motion
 
-### Backend
-- Node.js
-- Express
-- TypeScript
-- Spotify Web API
-- Google Gemini Integration
+**Backend** — Node.js, Express, TypeScript, Spotify Web API, Google Gemini, YouTube Data API v3
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (>= 18.0.0)
-- npm or yarn
-- Spotify Developer Account
-- Google Cloud project (OAuth client for YouTube + Gemini API key)
+- Node.js >= 18
+- A [Spotify Developer](https://developer.spotify.com/dashboard) app
+- A [Google Cloud](https://console.cloud.google.com) project with:
+  - OAuth 2.0 client (for YouTube export)
+  - YouTube Data API v3 enabled
+  - Gemini API key (from [Google AI Studio](https://aistudio.google.com/apikey))
 
-### Installation
+### Setup
 
-1. Clone the repository:
+1. Clone and install:
 ```bash
-git clone https://github.com/yourusername/MewFlo.git
+git clone https://github.com/YaseensCodeMuseum/MewFlo.git
 cd MewFlo
-```
-
-2. Install frontend dependencies:
-```bash
 npm install
+cd backend && npm install
 ```
 
-3. Install backend dependencies:
-```bash
-cd backend
-npm install
-```
-
-4. Create a single `.env` file in the root directory — it is shared by the frontend and the backend. Vite only exposes `VITE_`-prefixed vars to the browser; everything else stays server-side:
+2. Create a `.env` file in the project root (this file is gitignored and shared by both frontend and backend):
 ```env
 PORT=3000
 
-# Frontend (PUBLIC — bundled into the shipped JS)
+# Frontend (public — Vite bundles VITE_* vars into the browser JS)
 VITE_API_URL=http://localhost:3000/api
-VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+VITE_SPOTIFY_CLIENT_ID=<your_spotify_client_id>
 VITE_SPOTIFY_REDIRECT_URI=http://localhost:5173/callback
-VITE_YOUTUBE_CLIENT_ID=your_google_oauth_client_id
+VITE_YOUTUBE_CLIENT_ID=<your_google_oauth_client_id>
 VITE_YOUTUBE_REDIRECT_URI=http://localhost:5173/callback
-VITE_YOUTUBE_API_KEY=your_youtube_data_api_key
+VITE_YOUTUBE_API_KEY=<your_youtube_api_key>
 
-# Backend secrets (never add a VITE_ prefix to these)
-GEMINI_API_KEY=your_gemini_api_key
-SPOTIFY_CLIENT_ID=your_spotify_client_id
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-YOUTUBE_CLIENT_ID=your_google_oauth_client_id
-YOUTUBE_CLIENT_SECRET=your_google_oauth_client_secret
-YOUTUBE_API_KEY=your_youtube_data_api_key
+# Backend secrets (never prefix these with VITE_)
+GEMINI_API_KEY=<your_gemini_api_key>
+SPOTIFY_CLIENT_ID=<your_spotify_client_id>
+SPOTIFY_CLIENT_SECRET=<your_spotify_client_secret>
+YOUTUBE_CLIENT_ID=<your_google_oauth_client_id>
+YOUTUBE_CLIENT_SECRET=<your_google_oauth_client_secret>
+YOUTUBE_API_KEY=<your_youtube_api_key>
 ```
 
-In production the file isn't used — set the `VITE_` vars in the Vercel frontend project and the secret vars in the backend deployment's dashboard.
+> **Note:** `VITE_`-prefixed variables are embedded in the public JS bundle by design — only put client IDs and public API keys there, never secrets.
 
-### Running Locally
-
-1. Start the backend server:
+3. Run locally (two terminals):
 ```bash
-cd backend
+# Terminal 1 — backend
+cd backend && npm run dev
+
+# Terminal 2 — frontend
 npm run dev
 ```
 
-2. In a new terminal, start the frontend development server:
-```bash
-npm run dev
-```
+4. Open [http://localhost:5173](http://localhost:5173)
 
-3. Open your browser and navigate to `http://localhost:5173`
+## Deployment
 
-## 🏗️ Building for Production
+The project deploys as a single Vercel project — the frontend is served statically and the backend runs as a serverless function under `/api`.
 
-1. Build the frontend:
-```bash
-npm run build
-```
+1. Push to GitHub
+2. Import the repo in [Vercel](https://vercel.com)
+3. Add the environment variables listed above in **Settings → Environment Variables** (use `VITE_API_URL=/api` for production)
+4. Deploy
 
-2. Build the backend:
-```bash
-cd backend
-npm run build
-```
+## Contributing
 
-## 🚢 Deployment
+Contributions are welcome!
 
-The project is configured for deployment on Vercel. The `vercel.json` file contains the necessary configuration for deployment.
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes
+4. Open a Pull Request
 
-To deploy:
+## License
 
-1. Push your changes to GitHub
-2. Connect your repository to Vercel
-3. Configure the environment variables in Vercel's dashboard
-4. Deploy!
+MIT — see [LICENSE](LICENSE) for details.
 
-## 📝 License
+## Contact
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Instagram — [@yaleftonseen](https://instagram.com/yaleftonseen)
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📧 Contact
-
-My Instagram - [@yaleftonseen](https://instagram.com/yaleftonseen)
-
-Project Link: [https://github.com/yourusername/MewFlo](https://github.com/yourusername/MewFlo)
+Portfolio — [yaseensportfolio.vercel.app](https://yaseensportfolio.vercel.app)

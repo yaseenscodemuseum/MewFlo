@@ -97,13 +97,18 @@ export const Loading = (): JSX.Element => {
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({ error: 'Server error occurred' }));
-          
+          // The error field may not be a string (proxy/crash pages, upstream
+          // API errors), so coerce before matching on it.
+          const errorText = typeof errorData?.error === 'string'
+            ? errorData.error
+            : JSON.stringify(errorData?.error ?? '');
+
           // Handle specific error cases
-          if (errorData.error?.includes('429') || errorData.error?.includes('quota')) {
+          if (errorText.includes('429') || errorText.includes('quota')) {
             throw new Error('The AI service is currently busy. Please try again in a few minutes.');
           }
-          
-          throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+
+          throw new Error(errorText || `HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json().catch(() => {

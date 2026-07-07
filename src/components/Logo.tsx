@@ -1,14 +1,16 @@
-import { useNavigate } from "react-router-dom";
-
 export const Logo = (): JSX.Element => {
-  const navigate = useNavigate();
-
   return (
-    <h1 
-      className="[font-family:'Circular_Spotify_Text-Bold',Helvetica] font-bold text-[#acbd86] text-8xl text-center mb-16 cursor-pointer hover:text-[#acbd86]/80 transition-colors"
-      onClick={() => navigate('/')}
+    <a
+      href="https://yaseensportfolio.vercel.app"
+      className="absolute top-[18px] left-[29px] z-[1001]"
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      MewFlo
-    </h1>
+      <img
+        src="/logo.svg"
+        alt="MewFlo"
+        className="h-[75px] w-auto transition-all"
+      />
+    </a>
   );
-}; 
+};

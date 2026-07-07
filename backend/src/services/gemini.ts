@@ -1,14 +1,19 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import dotenv from 'dotenv';
 
-dotenv.config();
+// Created lazily so a missing API key surfaces as a request error instead of
+// crashing the module at load time (which would take down the whole
+// serverless function, /health included).
+let genAI: GoogleGenerativeAI | null = null;
 
-// Validate API key
-if (!process.env.GEMINI_API_KEY) {
-  throw new Error('GEMINI_API_KEY is not set in environment variables');
+function getGenAI(): GoogleGenerativeAI {
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error('GEMINI_API_KEY is not set in environment variables');
+  }
+  if (!genAI) {
+    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  }
+  return genAI;
 }
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 interface PlaylistItem {
   title: string;
@@ -29,7 +34,7 @@ export const generatePlaylist = async (preferences: {
 }): Promise<PlaylistItem[]> => {
   try {
     console.log("Generating playlist with preferences:", preferences);
-    const model = genAI.getGenerativeModel({
+    const model = getGenAI().getGenerativeModel({
       model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.7,
