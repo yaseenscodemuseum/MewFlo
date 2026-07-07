@@ -9,7 +9,7 @@ export const Logo = (): JSX.Element => {
       <img
         src="/logo.svg"
         alt="MewFlo"
-        className="h-[75px] w-auto transition-all"
+        className="h-[75px] w-auto transition-all brightness-0 invert"
       />
     </a>
   );
