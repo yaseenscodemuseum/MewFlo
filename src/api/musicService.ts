@@ -48,8 +48,11 @@ class MusicService {
         }));
       } else {
         const youtubeResults = await youtubeAPI.searchTracks(query, limit);
-        results = youtubeResults.map((track: any) => ({
-          ...track,
+        results = youtubeResults.map((item: any) => ({
+          id: item.id?.videoId || item.id || '',
+          title: item.snippet?.title || '',
+          artist: item.snippet?.channelTitle || '',
+          thumbnail: item.snippet?.thumbnails?.high?.url,
           platform: 'youtube' as Platform,
         }));
       }
