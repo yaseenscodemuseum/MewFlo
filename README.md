@@ -6,7 +6,7 @@ MewFlo is an AI-powered web app that generates personalized music playlists base
 
 ## Features
 
-- AI playlist generation powered by Google Gemini
+- AI playlist generation powered by Google Gemini (with OpenAI fallback)
 - Export to Spotify (PKCE auth) and YouTube Music (OAuth 2.0)
 - Song search across platforms
 - Customizable preferences: genres, artists, languages, mood, explicit content filter, song count
@@ -16,7 +16,7 @@ MewFlo is an AI-powered web app that generates personalized music playlists base
 
 **Frontend** — React 18, TypeScript, Vite, Tailwind CSS, Radix UI, Motion
 
-**Backend** — Node.js, Express, TypeScript, Spotify Web API, Google Gemini, YouTube Data API v3
+**Backend** — Node.js, Express, TypeScript, Spotify Web API, Google Gemini, OpenAI, YouTube Data API v3
 
 ## Getting Started
 
@@ -28,6 +28,7 @@ MewFlo is an AI-powered web app that generates personalized music playlists base
   - OAuth 2.0 client (for YouTube export)
   - YouTube Data API v3 enabled
   - Gemini API key (from [Google AI Studio](https://aistudio.google.com/apikey))
+- An [OpenAI](https://platform.openai.com/api-keys) API key (optional — used as fallback when Gemini is unavailable)
 
 ### Setup
 
@@ -53,6 +54,7 @@ VITE_YOUTUBE_API_KEY=<your_youtube_api_key>
 
 # Backend secrets (never prefix these with VITE_)
 GEMINI_API_KEY=<your_gemini_api_key>
+OPENAI_API_KEY=<your_openai_api_key>
 SPOTIFY_CLIENT_ID=<your_spotify_client_id>
 SPOTIFY_CLIENT_SECRET=<your_spotify_client_secret>
 YOUTUBE_CLIENT_ID=<your_google_oauth_client_id>

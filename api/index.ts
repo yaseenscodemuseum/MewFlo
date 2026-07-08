@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import OpenAI from 'openai';
 import SpotifyWebApi from 'spotify-web-api-node';
 import axios from 'axios';
 
@@ -39,7 +40,7 @@ interface PlaylistItem {
   reason: string;
 }
 
-async function generatePlaylist(preferences: {
+interface PlaylistPreferences {
   songCount: number;
   songs: string[];
   platform: string;
@@ -49,21 +50,11 @@ async function generatePlaylist(preferences: {
   languages?: string[];
   allowExplicit?: boolean;
   moods?: string[];
-}): Promise<PlaylistItem[]> {
-  const model = getGenAI().getGenerativeModel({
-    model: 'gemini-2.5-flash',
-    generationConfig: {
-      temperature: 0.7,
-      topK: 40,
-      topP: 0.95,
-      maxOutputTokens: 8192,
-      responseMimeType: 'application/json',
-    }
-  });
+}
 
+function buildPrompt(preferences: PlaylistPreferences): string {
   const requiredSongs = preferences.songCount;
-
-  const prompt = `You are a music playlist generator. Create a playlist based on these preferences:
+  return `You are a music playlist generator. Create a playlist based on these preferences:
 
 User Preferences:
 - Number of songs: ${requiredSongs}
@@ -107,24 +98,20 @@ Important:
 - Ensure all songs are real and available on the specified platform
 - Make sure the reasons are specific and reference the user's preferences
 - The total number of songs in the playlist MUST be exactly ${requiredSongs}`;
+}
 
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
-  const text = response.text();
-
+function parseAndNormalize(text: string, requiredSongs: number, preferences: PlaylistPreferences): PlaylistItem[] {
   const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
   const parsedResponse = JSON.parse(cleanedText);
 
-  let playlist = Array.isArray(parsedResponse) ? parsedResponse :
+  let playlist: PlaylistItem[] = Array.isArray(parsedResponse) ? parsedResponse :
     parsedResponse.playlist || parsedResponse.songs || [];
 
-  if (Array.isArray(playlist)) {
-    playlist = playlist.map((item: any) => ({
-      title: item.title || '',
-      artist: item.artist || '',
-      reason: item.reason || ''
-    }));
-  }
+  playlist = playlist.map((item: any) => ({
+    title: item.title || '',
+    artist: item.artist || '',
+    reason: item.reason || ''
+  }));
 
   if (playlist.length === 0) {
     throw new Error('Failed to generate a valid playlist');
@@ -136,22 +123,82 @@ Important:
       return match ? match[1].trim().toLowerCase() : song.toLowerCase();
     });
 
-    const userSongs = playlist.filter((song: PlaylistItem) =>
+    const userSongs = playlist.filter(song =>
       userSongTitles.some(title => song.title.toLowerCase().includes(title))
     );
-    const recommendedSongs = playlist.filter((song: PlaylistItem) =>
+    const recommendedSongs = playlist.filter(song =>
       !userSongTitles.some(title => song.title.toLowerCase().includes(title))
     );
 
     if (userSongs.length >= requiredSongs) {
       playlist = userSongs.slice(0, requiredSongs);
     } else {
-      const neededRecommendations = requiredSongs - userSongs.length;
-      playlist = [...userSongs, ...recommendedSongs.slice(0, neededRecommendations)];
+      playlist = [...userSongs, ...recommendedSongs.slice(0, requiredSongs - userSongs.length)];
     }
   }
 
   return playlist;
+}
+
+async function generateWithGemini(prompt: string, modelName: string): Promise<string> {
+  const model = getGenAI().getGenerativeModel({
+    model: modelName,
+    generationConfig: {
+      temperature: 0.7,
+      topK: 40,
+      topP: 0.95,
+      maxOutputTokens: 8192,
+      responseMimeType: 'application/json',
+    }
+  });
+  const result = await model.generateContent(prompt);
+  return result.response.text();
+}
+
+async function generateWithOpenAI(prompt: string): Promise<string> {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY is not set');
+  }
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    temperature: 0.7,
+    max_tokens: 8192,
+    response_format: { type: 'json_object' },
+    messages: [
+      { role: 'system', content: 'You are a music playlist generator. Always respond with valid JSON.' },
+      { role: 'user', content: prompt }
+    ]
+  });
+  return completion.choices[0]?.message?.content || '[]';
+}
+
+async function generatePlaylist(preferences: PlaylistPreferences): Promise<PlaylistItem[]> {
+  const prompt = buildPrompt(preferences);
+  const requiredSongs = preferences.songCount;
+
+  const models = [
+    { name: 'gemini-2.5-flash', fn: () => generateWithGemini(prompt, 'gemini-2.5-flash') },
+    { name: 'gemini-2.0-flash', fn: () => generateWithGemini(prompt, 'gemini-2.0-flash') },
+    { name: 'gpt-4o-mini',      fn: () => generateWithOpenAI(prompt) },
+  ];
+
+  let lastError: Error | null = null;
+
+  for (const model of models) {
+    try {
+      console.log(`Trying model: ${model.name}`);
+      const text = await model.fn();
+      const playlist = parseAndNormalize(text, requiredSongs, preferences);
+      console.log(`Success with ${model.name}`);
+      return playlist;
+    } catch (err: any) {
+      console.error(`${model.name} failed:`, err.message);
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error('All AI models failed to generate a playlist');
 }
 
 // --- Spotify search ---
