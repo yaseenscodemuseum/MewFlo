@@ -1,3 +1,4 @@
+import Anthropic from '@anthropic-ai/sdk';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import OpenAI from 'openai';
 
@@ -119,6 +120,21 @@ function parseAndNormalize(text: string, requiredSongs: number, preferences: Pla
   return playlist;
 }
 
+async function generateWithClaude(prompt: string): Promise<string> {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    throw new Error('ANTHROPIC_API_KEY is not set');
+  }
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const message = await anthropic.messages.create({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 8192,
+    system: 'You are a music playlist generator. Always respond with valid JSON arrays. Do not include any text outside the JSON.',
+    messages: [{ role: 'user', content: prompt }],
+  });
+  const textBlock = message.content.find((b: any) => b.type === 'text');
+  return (textBlock as any)?.text || '[]';
+}
+
 async function generateWithGemini(prompt: string, modelName: string): Promise<string> {
   const model = getGenAI().getGenerativeModel({
     model: modelName,
@@ -152,15 +168,50 @@ async function generateWithOpenAI(prompt: string): Promise<string> {
   return completion.choices[0]?.message?.content || '[]';
 }
 
+async function generateWithOpenRouter(prompt: string, model: string): Promise<string> {
+  if (!process.env.OPENROUTER_API_KEY) {
+    throw new Error('OPENROUTER_API_KEY is not set');
+  }
+  const openrouter = new OpenAI({
+    apiKey: process.env.OPENROUTER_API_KEY,
+    baseURL: 'https://openrouter.ai/api/v1',
+  });
+  const completion = await openrouter.chat.completions.create({
+    model,
+    temperature: 0.7,
+    max_tokens: 8192,
+    messages: [
+      { role: 'system', content: 'You are a music playlist generator. Always respond with valid JSON arrays. Do not include any text outside the JSON.' },
+      { role: 'user', content: prompt }
+    ]
+  });
+  return completion.choices[0]?.message?.content || '[]';
+}
+
 export const generatePlaylist = async (preferences: PlaylistPreferences): Promise<PlaylistItem[]> => {
   const prompt = buildPrompt(preferences);
   const requiredSongs = preferences.songCount;
 
-  const models = [
-    { name: 'gemini-2.5-flash', fn: () => generateWithGemini(prompt, 'gemini-2.5-flash') },
-    { name: 'gemini-2.0-flash', fn: () => generateWithGemini(prompt, 'gemini-2.0-flash') },
-    { name: 'gpt-4o-mini',      fn: () => generateWithOpenAI(prompt) },
-  ];
+  const models: { name: string; fn: () => Promise<string> }[] = [];
+
+  if (process.env.ANTHROPIC_API_KEY) {
+    models.push({ name: 'claude-sonnet-4', fn: () => generateWithClaude(prompt) });
+  }
+  if (process.env.GEMINI_API_KEY) {
+    models.push({ name: 'gemini-2.5-flash', fn: () => generateWithGemini(prompt, 'gemini-2.5-flash') });
+    models.push({ name: 'gemini-2.0-flash', fn: () => generateWithGemini(prompt, 'gemini-2.0-flash') });
+  }
+  if (process.env.OPENAI_API_KEY) {
+    models.push({ name: 'gpt-4o-mini', fn: () => generateWithOpenAI(prompt) });
+  }
+  if (process.env.OPENROUTER_API_KEY) {
+    models.push({ name: 'deepseek-chat-v3', fn: () => generateWithOpenRouter(prompt, 'deepseek/deepseek-chat-v3-0324:free') });
+    models.push({ name: 'qwen3-235b', fn: () => generateWithOpenRouter(prompt, 'qwen/qwen3-235b-a22b:free') });
+  }
+
+  if (models.length === 0) {
+    throw new Error('No AI API keys configured. Set at least one of: ANTHROPIC_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, OPENROUTER_API_KEY');
+  }
 
   let lastError: Error | null = null;
 
