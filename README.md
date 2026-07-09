@@ -6,7 +6,7 @@ MewFlo is an AI-powered web app that generates personalized music playlists base
 
 ## Features
 
-- AI playlist generation with 6-model fallback chain (Claude → Gemini → OpenAI → Deepseek → Qwen3)
+- AI playlist generation with 6-model fallback chain (Claude → Gemini → OpenAI → Tencent Hy3 → GPT-OSS)
 - Export to Spotify (PKCE auth) and YouTube Music (OAuth 2.0)
 - Song search across platforms
 - Customizable preferences: genres, artists, languages, mood, explicit content filter, song count
@@ -16,7 +16,7 @@ MewFlo is an AI-powered web app that generates personalized music playlists base
 
 **Frontend** — React 18, TypeScript, Vite, Tailwind CSS, Radix UI, Motion
 
-**Backend** — Node.js, Express, TypeScript, Spotify Web API, Claude, Google Gemini, OpenAI, OpenRouter (Deepseek, Qwen3), YouTube Data API v3
+**Backend** — Node.js, Express, TypeScript, Spotify Web API, Claude, Google Gemini, OpenAI, OpenRouter (Tencent Hy3, GPT-OSS), YouTube Data API v3
 
 ## Getting Started
 
@@ -30,7 +30,7 @@ MewFlo is an AI-powered web app that generates personalized music playlists base
   - Gemini API key (from [Google AI Studio](https://aistudio.google.com/apikey))
 - An [Anthropic](https://console.anthropic.com/settings/keys) API key (optional — primary model, used first when available)
 - An [OpenAI](https://platform.openai.com/api-keys) API key (optional — fallback when Gemini is unavailable)
-- An [OpenRouter](https://openrouter.ai/keys) API key (optional — free-tier fallback via Deepseek and Qwen3-235B)
+- An [OpenRouter](https://openrouter.ai/keys) API key (optional — free-tier fallback via Tencent Hy3 and GPT-OSS-120B)
 
 ### Setup
 

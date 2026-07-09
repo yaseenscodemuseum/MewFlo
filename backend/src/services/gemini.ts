@@ -205,8 +205,8 @@ export const generatePlaylist = async (preferences: PlaylistPreferences): Promis
     models.push({ name: 'gpt-4o-mini', fn: () => generateWithOpenAI(prompt) });
   }
   if (process.env.OPENROUTER_API_KEY) {
-    models.push({ name: 'deepseek-chat-v3', fn: () => generateWithOpenRouter(prompt, 'deepseek/deepseek-chat-v3-0324:free') });
-    models.push({ name: 'qwen3-235b', fn: () => generateWithOpenRouter(prompt, 'qwen/qwen3-235b-a22b:free') });
+    models.push({ name: 'tencent-hy3', fn: () => generateWithOpenRouter(prompt, 'tencent/hy3:free') });
+    models.push({ name: 'gpt-oss-120b', fn: () => generateWithOpenRouter(prompt, 'openai/gpt-oss-120b:free') });
   }
 
   if (models.length === 0) {
